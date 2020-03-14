@@ -13,3 +13,31 @@ $ ./install
 ```sh
 $ exec dotnet /usr/local/lib/microsoft-python-language-server/Microsoft.Python.LanguageServer.dll "\$@"
 ```
+
+## Settings
+
+Settings.json used by a language client
+
+```json
+{
+  "enabled": true,
+  "initializationOptions": {
+    "displayOptions": {
+      "preferredFormat": "markdown",
+      "trimDocumentationLines": true,
+      "maxDocumentationLineLength": 0,
+      "trimDocumentationText": true,
+      "maxDocumentationTextLength": 0
+    },
+    "interpreter": {
+      "properties": {
+        "UseDefaultDatabase": true
+      }
+    }
+  }
+}
+```
+
+## More
+
+[MoerkerkeLander/dotfiles: My rice](https://github.com/MoerkerkeLander/dotfiles)
