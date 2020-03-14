@@ -35,6 +35,11 @@ namespace Microsoft.Python.LanguageServer.Implementation {
         [JsonRpcMethod("initialize")]
         public async Task<InitializeResult> Initialize(JToken token, CancellationToken cancellationToken) {
             _initParams = token.ToObject<InitializeParams>();
+
+
+            _initParams.initializationOptions.interpreter.properties.InterpreterPath = ExecuteBashCommand("which python");
+            _initParams.initializationOptions.interpreter.properties.Version = ExecuteBashCommand("python -V | sed 's/Python //g'");
+
             MonitorParentProcess(_initParams);
             RegisterServices(_initParams);
 
@@ -137,6 +142,30 @@ namespace Microsoft.Python.LanguageServer.Implementation {
             // optimization service consumes the cache info.
             CacheService.Register(_services, initParams?.initializationOptions?.cacheFolderPath);
             _services.AddService(new ProfileOptimizationService(_services));
+        }
+
+        static string ExecuteBashCommand(string command)
+        {
+            // according to: https://stackoverflow.com/a/15262019/637142
+            // thans to this we will pass everything as one command
+            command = command.Replace("\"","\"\"");
+
+            var proc = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "/bin/bash",
+                             Arguments = "-c \""+ command + "\"",
+                             UseShellExecute = false,
+                             RedirectStandardOutput = true,
+                             CreateNoWindow = true
+                }
+            };
+
+            proc.Start();
+            proc.WaitForExit();
+
+            return proc.StandardOutput.ReadToEnd().Replace("\n", "");
         }
     }
 }
