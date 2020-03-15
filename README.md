@@ -1,6 +1,6 @@
 # Microsoft Python Language Server
 
-Own build of the Microsoft Python Language Server. The differnce is that this build will grab the Python executable path of your current shell along with its version.
+Own build of the Microsoft Python Language Server. The difference is that this build will grab the Python executable path of your current shell along with its version.
 
 ## Install
 
